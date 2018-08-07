@@ -105,3 +105,4 @@ venv.bak/
 
 # 临时文件夹
 temp/
+*.db
