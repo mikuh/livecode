@@ -8,6 +8,7 @@ sys.path.extend(['../../livecode'])
 from livecode import routes
 from livecode.utils import load_config
 from livecode.db import attach_db
+from livecode.middlewares import check_me
 
 # 运行参数
 parser = argparse.ArgumentParser(description="start live code service")
@@ -19,7 +20,7 @@ args = parser.parse_args()
 configs = load_config('./configs/base.yaml')
 
 # 初始化服务器
-app = web.Application()
+app = web.Application(middlewares=[check_me])
 
 
 app['config'] = configs

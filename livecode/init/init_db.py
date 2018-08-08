@@ -22,11 +22,12 @@ cursor.execute("CREATE INDEX phone ON users (phone)")
 cursor.execute("INSERT into users (phone, password) VALUES (?, ?)", [configs['default_account']['phone'], configs['default_account']['password']])
 
 # 创建用户链接码表
-cursor.execute('CREATE TABLE link_code (id integer primary key AUTOINCREMENT, phone varchar(20), link_index integer, link_title varchar(64), scan_num integer)')
-cursor.execute("CREATE INDEX phone_index ON link_code (phone, link_index)")
+cursor.execute('CREATE TABLE link_code (id integer primary key AUTOINCREMENT, phone varchar(20), link_index varchar(40), link_title varchar(64),skip_num integer, scan_num integer)')
+cursor.execute("CREATE INDEX link_index ON link_code (link_index)")
+cursor.execute("CREATE INDEX phone_index ON link_code (phone)")
 
 # 创建用户二维码表
-cursor.execute('CREATE TABLE qr_code (id integer primary key AUTOINCREMENT, phone varchar(20), img_src varchar(100))')
+cursor.execute('CREATE TABLE qr_code (id integer primary key AUTOINCREMENT, link_index varchar(20), img_src varchar(100))')
 
 
 logging.info("初始化数据表完成。")

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container" style="margin-top: 3%">
+    <a href="/">返回首页</a><br>
+    <a href="/static/images/link/{{ live_code_info['link_index'] }}.png" target="_blank" title="下载图片"><img src="/static/images/link/{{ live_code_info['link_index'] }}.png" width="160px"></a>
+    <p>活码标题：{{ live_code_info['link_title'] }}</p>
+    <input type="hidden" id="link_index" value="{{ live_code_info['link_index'] }}">
+    <p>跳转阈值： {{ live_code_info['skip_num'] }}</p>
+    <p>已扫码次数： {{ live_code_info['scan_num'] }}</p>
+    <h1>群二维码列表</h1>
+
+
+        <div class="form-group">
+            <label for="wechatqrcode">选择群二维码</label>
+            <input type="file" class="form-control" id="wechatqrcode">
+            <label for="label">二维码标签</label>
+            <input type="text" class="form-control" id="label">
+        </div>
+        <input type="button" class="btn btn-primary" id="update" value="保存二维码">
+
+<br>
+
+    <!-- 我的群二维码-->
+    {% for qrcode in qr_codes %}
+
+    <div class="card" style="width: 18rem; float: left;margin-right: 30px; margin-top: 10px">
+        <img class="card-img-top" src="/static/images/qrcode/{{ qrcode['img_src'] }}.png">
+        <div class="card-body">
+            <p class="card-text"><input class="btn btn-primary delete" style="width: 100%" type="button" data="{{ qrcode['id'] }}" value="删除"></p>
+        </div>
+    </div>
+    {% endfor %}
+
+
+
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $('#update').bind("click", function () {
+        let form_data = new FormData();
+        let label = $('#label').val()
+        form_data.append('label', label)
+        let link_index = $('#link_index').val()
+        form_data.append('link_index', link_index)
+        let qrcode = document.getElementById("wechatqrcode").files[0]
+        form_data.append('qrcode', qrcode)
+        form_data.append('label', label)
+        console.log(form_data)
+
+        $.ajax({
+            url: '/update_qrcode',
+            type: 'POST',
+            cache: false,
+            data: form_data,
+            processData: false,
+            contentType: false
+        }).done(function (res) {
+            toastr["success"]("保存成功！")
+            setTimeout(function () {
+                location.reload();
+            }, 2000)
+        }).fail(function (res) {
+            toastr["error"]("提交失败，请重试！")
+        });
+
+    })
+</script>
+{% endblock%}

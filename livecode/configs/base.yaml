@@ -1,3 +1,5 @@
 default_account:
   phone: admin
-  password: 0dd07af7ff38f2a00dc67455fb58125f8ff45681
+  password: a56c5015bb850da0057240d8493052817441f136
+expires: 604800
+domain: mydomain.com

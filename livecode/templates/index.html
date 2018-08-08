@@ -2,67 +2,72 @@
 
 {% block body %}
 <div class="container" style="margin-top: 3%">
+    <div>
+        <h5>欢迎登录， {{ phone }} ，<a href="/logout">退出</a></h5>
+    </div>
     <div class="row">
   <div class="col-4">
     <div class="list-group" id="list-tab" role="tablist">
       <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">创建活码</a>
       <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">我的活码</a>
-      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
-      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">扫码统计</a>
+      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">个人设置</a>
     </div>
   </div>
   <div class="col-8">
     <div class="tab-content" id="nav-tabContent">
+
+        <!-- 创建活码 -->
         <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
             <form>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">活码标题</label>
-                    <input type="code_title" class="form-control" id="exampleInputEmail1" aria-describedby="code_title"
-                           placeholder="微信群1">
+                    <label for="code-title">活码标题</label>
+                    <input type="text" class="form-control" id="code-title" placeholder="微信群1">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">扫描次数</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" value="100">
+                    <label for="skip_num">阈值次数</label>
+                    <input type="text" class="form-control" id="skip_num" value="100">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%">保存</button>
+                <button type="button" id="create-live-code" class="btn btn-primary" style="width: 100%">保存</button>
             </form>
         </div>
 
         <!-- 我的活码 -->
         <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
             <ul class="list-unstyled">
-                <li class="media">
-                    <img class="mr-3" src=".../64x64" alt="Generic placeholder image">
+
+                {% for row in data %}
+                    <li class="media">
+                    <img class="mr-3" src="/static/images/link/{{ row['link_index'] }}.png" width="64" alt="Generic placeholder image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                        vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <h5 class="mt-0 mb-1">{{ row['link_title'] }}</h5>
+                        <small>
+                        <div class="row">
+                            <div class="col-sm">
+                                群二维码：<span class="link1_pic_num">{{ row['pic_num'] }}</span>张
+                            </div>
+                            <div class="col-sm">
+                                 阈值：<span class="thre"> {{ row['skip_num'] }} </span>次
+                            </div>
+                            <div class="col-sm">
+                                已扫描：<span class="scan_num"> {{ row['scan_num'] }} </span>次
+                            </div>
+                        </div>
+                        </small>
+                        <small>
+                         <p style="margin-top: 5px">
+                           <a href="/static/images/link/{{ row['link_index'] }}.png" target="_blank">下载活码</a> &nbsp;&nbsp;&nbsp; <a href="/manage_code/{{ row['link_index'] }}">管理二维码</a>  &nbsp;&nbsp;&nbsp; <a href="/deal_live_code/{{ row['link_index'] }}">删除</a>
+                         </p>
+                         </small>
                     </div>
                 </li>
-                <li class="media my-4">
-                    <img class="mr-3" src=".../64x64" alt="Generic placeholder image">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                        vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </div>
-                </li>
-                <li class="media">
-                    <img class="mr-3" src=".../64x64" alt="Generic placeholder image">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                        vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </div>
-                </li>
+                <hr>
+                {% endfor %}
             </ul>
         </div>
 
 
-
+        <!-- -->
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
     </div>
@@ -70,3 +75,54 @@
 </div>
 </div>
 {% endblock%}
+
+{% block script %}
+<script>
+    $('#create-live-code').bind('click', function () {
+        let link_title = $('#code-title').val()
+        let skip_num = parseInt($('#skip_num').val())
+        if (link_title == '') {
+            return toastr["error"]('请先填写二维码标题')
+        } else if (!Number.isInteger(skip_num) || skip_num > 1000) {
+            return toastr["error"]('必须填写整数阈值且小于1000')
+        } else {
+            $.post("/create_live_code", {
+                'link_title': link_title,
+                'skip_num': skip_num,
+            }, function (data) {
+                if (data.error_code == 0) {
+                    // 如果校验成功，直接登录
+                    toastr["success"]("创建成功！")
+                    setTimeout(function () {
+                       location.reload();
+                   }, 1000)
+                } else {
+                    // 否则 提示错误信息
+                    toastr["error"](data.msg)
+                }
+            })
+        }
+    })
+
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "2000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+
+
+{% endblock  %}

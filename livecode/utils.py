@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import yaml
+import qrcode
 
 
 def sha1_encrypt(text):
@@ -22,3 +23,16 @@ def load_config(path):
     with open(path, 'r') as f:
         data = yaml.load(f)
     return data
+
+
+def create_live_code(app, src):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=20,
+        border=1,
+    )
+    qr.add_data(app['config']['domain'] + '/code/' + src)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save('./static/images/link/{}.png'.format(src))
