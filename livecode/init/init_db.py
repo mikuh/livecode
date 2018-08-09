@@ -1,7 +1,9 @@
 """初始化数据库
 """
+import os, sys
 import sqlite3
 import logging
+sys.path.extend(['../live_code/'])
 from livecode.utils import load_config
 from livecode.utils import password_encrypt
 configs = load_config('../configs/base.yaml')
