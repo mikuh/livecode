@@ -1,5 +1,4 @@
 from aiohttp import web
-import aiohttp_jinja2
 from livecode.utils import sha1_encrypt
 import time
 
@@ -11,14 +10,13 @@ class UpdateQrCode(web.View):
         phone = self.request['user']
         form_data = await self.request.post()
         name = sha1_encrypt(phone + str(time.time()))
-        print(name)
         img = form_data['qrcode']
         file_content = img.file.read()
         with open(f"./static/images/qrcode/{name}.png", 'wb') as f:
             f.write(file_content)
         cursor = self.request.app['db'].cursor()
         try:
-            cursor.execute("insert into qr_code (link_index, img_src) values(?, ?)", [form_data['link_index'], name])
+            cursor.execute("insert into qr_code (link_index, img_src, label) values(?, ?, ?)", [form_data['link_index'], name, form_data['label']])
             self.request.app['db'].commit()
         except Exception as e:
             print(e)

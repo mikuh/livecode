@@ -2,4 +2,4 @@ default_account:
   phone: admin
   password: a56c5015bb850da0057240d8493052817441f136
 expires: 604800
-domain: mydomain.com
+domain: http://192.168.1.125:8081

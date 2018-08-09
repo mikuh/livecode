@@ -12,9 +12,8 @@ class Index(web.View):
         phone = self.request['user']
         cursor = self.request.app['db'].cursor()
         try:
-            cursor.execute("select id,link_index,link_title, skip_num, scan_num, (select count(1) from qr_code where img_src=link_code.link_index) as pic_num from link_code where phone = ?", [phone])
+            cursor.execute("select id,link_index,link_title, skip_num, scan_num, (select count(1) from qr_code where link_index=link_code.link_index) as pic_num from link_code where phone = ?", [phone])
             rows = cursor.fetchall()
-            print(rows)
         except Exception as e:
             print(e)
         finally:

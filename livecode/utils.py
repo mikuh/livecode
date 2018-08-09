@@ -32,7 +32,7 @@ def create_live_code(app, src):
         box_size=20,
         border=1,
     )
-    qr.add_data(app['config']['domain'] + '/code/' + src)
+    qr.add_data(app['config']['domain'] + '/code_scan/' + src)
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save('./static/images/link/{}.png'.format(src))
